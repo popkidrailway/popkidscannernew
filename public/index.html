@@ -1,487 +1,309 @@
 <!DOCTYPE html>
-<html lang="si">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>POPKID-XMD</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --my-green: #00ff4d;
-            --my-dark: #000000;
-            --my-light-green: #66ff99;
-            --my-gold: #ff9999;
-            --my-glow: rgba(0, 255, 77, 0.6);
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Popkid-Xmd | LINK DEVICE</title>
+  <meta name="description" content="Secure WhatsApp pairing powered by Popkid-Xmd">
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
-        }
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Exo+2:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 
-        body {
-            background-color: var(--my-dark);
-            color: white;
-            min-height: 100vh;
-            position: relative;
-        }
+  <style>
+    :root {
+      --neon: #00ff88;
+      --neon-dim: #00cc6a;
+      --dark: #0a0a0f;
+      --glass: rgba(20, 20, 30, 0.35);
+      --text: #e0f7fa;
+      --input-bg: rgba(30, 30, 50, 0.4);
+      --border: rgba(0, 255, 136, 0.3);
+      --hover: rgba(0, 255, 136, 0.15);
+    }
 
-        .bg-layer {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(45deg, var(--my-dark), #111111, var(--my-dark));
-            z-index: 0;
-        }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
-        .spark-effect {
-            position: absolute;
-            width: 6px;
-            height: 6px;
-            background-color: var(--my-green);
-            border-radius: 50%;
-            box-shadow: 0 0 12px var(--my-green);
-            animation: sparkMove 10s ease-in-out infinite;  
-        }
+    body {
+      background: var(--dark);
+      color: var(--text);
+      font-family: 'Exo 2', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      position: relative;
+      padding: 40px 20px;
+    }
 
-        @keyframes sparkMove {
-            0% { transform: translate(0, 0) scale(0.5); opacity: 0; }
-            50% { opacity: 0.7; }
-            100% { transform: translate(80vw, -80vh) scale(1.5); opacity: 0; }
-        }
+    #particles-js { position: absolute; width: 100%; height: 100%; z-index: -1; }
 
-        .pulse-wave {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle, rgba(0, 255, 77, 0.08), transparent 60%);
-            animation: wavePulse 10s infinite;
-            z-index: -1;
-        }
+    .container {
+      width: 100%;
+      max-width: 520px;
+      padding: 48px 40px;
+      backdrop-filter: blur(12px);
+      background: var(--glass);
+      border-radius: 24px;
+      border: 1px solid var(--border);
+      box-shadow: 0 0 30px rgba(0, 255, 136, 0.1);
+      z-index: 10;
+      min-height: 400px;
+      overflow-y: auto;
+      opacity: 0;
+      transform: translateY(20px) scale(0.98);
+      animation: fadeInUp 0.8s ease forwards;
+    }
 
-        @keyframes wavePulse {
-            0% { opacity: 0.1; transform: scale(0.7); }
-            100% { opacity: 0.4; transform: scale(1.3); }
-        }
+    @keyframes fadeInUp {
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
 
-        .main-wrapper {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 25px;
-            position: relative;
-            z-index: 1;
-        }
+    @keyframes float {
+      0%,100%{transform:translateY(0);}
+      50%{transform:translateY(-10px);}
+    }
 
-        .top-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 35px 0;
-            margin-bottom: 45px;
-        }
+    @keyframes rotate {
+      0%{transform:rotate(0deg);}
+      100%{transform:rotate(360deg);}
+    }
 
-        .brand-logo {
-            display: flex;
-            align-items: center;
-            gap: 25px;
-        }
+    @keyframes pulse {
+      0%{box-shadow:0 0 15px var(--neon);}
+      100%{box-shadow:0 0 30px var(--neon),0 0 60px var(--neon-dim);}
+    }
 
-        .logo-img {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            border: 4px solid var(--my-green);
-            transition: all 0.5s;
-        }
+    .header { text-align: center; margin-bottom: 32px; }
 
-        .logo-img:hover {
-            transform: scale(1.15) rotate(15deg);
-            box-shadow: 0 0 45px var(--my-green);
-        }
+    .logo-container {
+      perspective: 1000px;
+      width: 100px;
+      height: 100px;
+      margin: 0 auto 20px;
+      cursor: pointer;
+      transform-style: preserve-3d;
+      animation: pulse 3s infinite alternate;
+      position: relative;
+    }
 
-        .brand-text h1 {
-            font-size: 2.3rem;
-            background: linear-gradient(to right, var(--my-green), var(--my-gold));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            text-shadow: 0 0 12px rgba(0, 0, 0, 0.7);
-        }
+    .logo {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 3px solid transparent;
+      box-shadow: 0 0 20px rgba(0,255,136,0.5);
+      backface-visibility: hidden;
+      transition: transform 0.6s ease;
+      position: relative;
+    }
 
-        .brand-text span {
-            font-size: 1.1rem;
-            color: var(--my-light-green);
-            letter-spacing: 1.5px;
-        }
+    .logo::before {
+      content: '';
+      position: absolute;
+      inset: -3px;
+      border-radius: 50%;
+      background: linear-gradient(45deg, transparent, var(--neon), transparent);
+      opacity: 0.6;
+      z-index: -1;
+      animation: rotate 4s linear infinite;
+    }
 
-        .content-box {
-            text-align: center;
-            padding: 45px 25px;
-            background: rgba(0, 0, 0, 0.65);
-            border-radius: 18px;
-            border: 2px solid var(--my-green);
-            box-shadow: 0 0 18px var(--my-green);
-            margin-bottom: 45px;
-        }
+    .logo img { width: 100%; height: 100%; object-fit: cover; }
 
-        .feature-pic {
-            max-width: 100%;
-            max-height: 450px;
-            border-radius: 12px;
-            border: 3px solid var(--my-green);
-            box-shadow: 0 0 25px var(--my-green);
-            margin-bottom: 35px;
-            transition: all 0.5s;
-        }
+    .logo-container:hover .logo { transform: rotateY(180deg); }
 
-        .feature-pic:hover {
-            transform: scale(1.03);
-            box-shadow: 0 0 50px var(--my-green);
-        }
+    .logo-back {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      border-radius: 50%;
+      background: var(--neon);
+      color: var(--dark);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-family: 'Orbitron', sans-serif;
+      backface-visibility: hidden;
+      transform: rotateY(-180deg);
+      box-shadow: 0 0 20px var(--neon);
+    }
 
-        .content-box h2 {
-            font-size: 2.1rem;
-            margin-bottom: 25px;
-            color: var(--my-light-green);
-            text-shadow: 0 0 12px var(--my-glow);
-        }
+    .title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      background: linear-gradient(to right, var(--neon), #00b3ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: 1px;
+    }
 
-        .content-box p {
-            font-size: 1.2rem;
-            margin-bottom: 35px;
-            max-width: 850px;
-            line-height: 1.7;
-        }
+    .subtitle {
+      font-size: 15px;
+      color: rgba(224,247,250,0.7);
+      margin-bottom: 28px;
+    }
 
-        .btn-group {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 18px;
-            margin-top: 25px;
-        }
+    .tagline {
+      font-size: 13px;
+      color: var(--neon);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 24px;
+      font-weight: 500;
+    }
 
-        .custom-btn {
-            padding: 14px 35px;
-            border-radius: 55px;
-            color: white;
-            text-decoration: none;
-            font-weight: 600;
-            display: inline-flex;
-            align-items: center;
-            gap: 12px;
-            transition: all 0.4s;
-            border: 2px solid transparent;
-            position: relative;
-        }
+    .input-label {
+      display: block;
+      margin-bottom: 10px;
+      font-size: 14px;
+      color: var(--neon);
+      font-weight: 500;
+    }
 
-        .custom-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -120%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-            transition: all 0.7s;
-        }
+    .input-field {
+      width: 100%;
+      padding: 15px 18px;
+      background: var(--input-bg);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      color: var(--text);
+      font-size: 15px;
+    }
 
-        .custom-btn:hover::before {
-            left: 120%;
-        }
+    .generate-btn {
+      width: 100%;
+      padding: 14px;
+      background: var(--neon);
+      color: var(--dark);
+      border: none;
+      border-radius: 14px;
+      font-size: 16px;
+      font-weight: 600;
+      font-family: 'Orbitron', sans-serif;
+      cursor: pointer;
+      margin: 20px 0 16px;
+    }
 
-        .download-btn {
-            background: linear-gradient(to right, var(--my-green), var(--my-dark));
-            border-color: var(--my-green);
-        }
+    .code-display {
+      min-height: 52px;
+      padding: 16px;
+      background: var(--input-bg);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      text-align: center;
+      font-family: 'Orbitron', monospace;
+      font-size: 16px;
+      color: var(--neon);
+      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      word-break: break-all;
+    }
 
-        .pair-btn {
-            background: linear-gradient(to right, var(--my-dark), #333);
-            border-color: var(--my-gold);
-        }
+    .copy-btn {
+      width: 100%;
+      padding: 14px;
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      color: var(--neon);
+      font-size: 15.5px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
 
-        .contact-btn {
-            background: linear-gradient(to right, var(--my-dark), #333);
-            border-color: var(--my-gold);
-        }
-
-        .github-btn {
-            background: linear-gradient(to right, var(--my-dark), #333);
-            border-color: var(--my-gold);
-        }
-
-        .heroku-btn {
-            background: linear-gradient(to right, var(--my-dark), #333);
-            border-color: var(--my-gold);
-        }
-
-        .custom-btn:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.7);
-            border-color: var(--my-gold);
-        }
-
-        .footer-section {
-            text-align: center;
-            padding: 35px;
-            margin-top: 55px;
-        }
-
-        .feedback-area {
-            margin: 45px auto;
-            max-width: 800px;
-            background: rgba(0, 0, 0, 0.65);
-            border-radius: 18px;
-            border: 2px solid var(--my-green);
-            box-shadow: 0 0 18px var(--my-green);
-            padding: 25px;
-        }
-
-        .input-field {
-            margin-bottom: 18px;
-        }
-
-        .user-name, .user-comment {
-            width: 100%;
-            padding: 14px;
-            margin-bottom: 12px;
-            background: rgba(0, 255, 77, 0.25);
-            border: 2px solid var(--my-green);
-            border-radius: 10px;
-            color: #fff;
-            font-size: 15px;
-            transition: all 0.4s;
-        }
-
-        .user-name:focus, .user-comment:focus {
-            border-color: var(--my-gold);
-            background: rgba(0, 255, 77, 0.35);
-            box-shadow: 0 0 12px var(--my-green);
-        }
-
-        .user-comment {
-            height: 130px;
-            resize: none;
-        }
-
-        .post-comment {
-            background: linear-gradient(45deg, var(--my-green), var(--my-gold));
-            color: #fff;
-            border: none;
-            padding: 14px 30px;
-            border-radius: 30px;
-            cursor: pointer;
-            width: 100%;
-            font-weight: bold;
-            transition: all 0.4s;
-        }
-
-        .post-comment:hover {
-            transform: scale(1.07);
-            box-shadow: 0 6px 18px rgba(0, 255, 77, 0.6);
-        }
-
-        .comment-list {
-            margin-top: 30px;
-            max-height: 320px;
-            overflow-y: auto;
-            padding-right: 12px;
-        }
-
-        .user-comment-box {
-            background: rgba(0, 255, 77, 0.35);
-            padding: 18px;
-            border-radius: 12px;
-            margin-bottom: 18px;
-            border-left: 5px solid var(--my-green);
-            position: relative;
-        }
-
-        .user-comment-box .comment-author {
-            color: var(--my-gold);
-            font-weight: bold;
-            margin-bottom: 6px;
-        }
-
-        .user-comment-box .comment-time {
-            font-size: 13px;
-            color: #ccffcc;
-            margin-bottom: 10px;
-        }
-
-        .user-comment-box p {
-            margin: 0;
-            line-height: 1.6;
-        }
-
-        .remove-comment {
-            position: absolute;
-            top: 12px;
-            right: 12px;
-            background: #66ff66;
-            border: none;
-            color: #fff;
-            padding: 6px 12px;
-            border-radius: 6px;
-            cursor: pointer;
-            display: none;
-        }
-
-        .user-comment-box:hover .remove-comment {
-            display: block;
-        }
-
-        .remove-comment:hover {
-            background: #33ff33;
-        }
-
-        @media (max-width: 768px) {
-            .top-header {
-                flex-direction: column;
-                gap: 25px;
-            }
-            .logo-img {
-                width: 70px;
-                height: 70px;
-            }
-            .brand-text h1 {
-                font-size: 1.9rem;
-            }
-            .btn-group {
-                flex-direction: column;
-                align-items: center;
-            }
-            .custom-btn {
-                width: 100%;
-                max-width: 300px;
-            }
-            .feedback-area {
-                padding: 18px;
-            }
-        }
-    </style>
+    .copy-btn:hover { background: var(--hover); }
+  </style>
 </head>
+
 <body>
-    <div class="bg-layer"></div>
-    <div class="pulse-wave"></div>
 
-    <div class="main-wrapper">
-        <header class="top-header">
-            <div class="brand-logo">
-                <img src="https://files.catbox.moe/aapw1p.png" alt="LOGO" class="logo-img">
-                <div class="brand-text">
-                    <h1>®POPKID-XMD</h1>
-                    <span>Kenyan Top WhatsApp Bot</span>
-                </div>
-            </div>
-        </header>
+<div id="particles-js"></div>
 
-        <main class="content-box">
-            <img src="https://files.catbox.moe/aapw1p.png" alt="POPKID-XMDFeature" class="feature-pic">
-            <h2>POPKID-XMD</h2>
-            <p></p>
-            <div class="btn-group">
-                <a href="/pair" class="custom-btn pair-btn">
-                    <i class="fas fa-link"></i> Pair Code
-                </a>
-                <a href="/qr" class="custom-btn pair-btn">
-                    <i class="fas fa-link"></i> Qr Code
-                </a>
-                <a href="https://wa.me/254111385747" target="_blank" class="custom-btn contact-btn">
-                    <i class="fas fa-headset"></i> Reach Owner
-                </a>
-                <a href="https://github.com/popkidc" target="_blank" class="custom-btn github-btn">
-                    <i class="fab fa-github"></i> GitHub Repo
-                </a>
-                <a href="https://dashboard.heroku.com/new?template=https://github.com/popkidc/POPKID-XD" target="_blank" class="custom-btn heroku-btn">
-                    <i class="fas fa-robot"></i> Heroku Deploy
-                </a>
-            </div>
-        </main>
-
-        <div class="feedback-area">
-            <div class="input-field">
-                <input type="text" class="user-name" placeholder="Your Name" required>
-                <textarea class="user-comment" placeholder="Leave your feedback..." required></textarea>
-                <button class="post-comment">Submit Feedback</button>
-            </div>
-            <div class="comment-list" id="comment-list"></div>
-        </div>
-
-        <footer class="footer-section">
-            <p>© POPKID-XMD 2025</p>
-        </footer>
+<div class="container">
+  <div class="header">
+    <div class="logo-container" id="logoFlip">
+      <div class="logo">
+        <img src="https://files.catbox.moe/aapw1p.png" alt="Popkid-Xmd Logo">
+      </div>
+      <div class="logo-back">
+        <i class="fas fa-shield-alt"></i>
+      </div>
     </div>
 
-    <script>
-        function addSparks(count) {
-            const bgLayer = document.querySelector('.bg-layer');
-            for (let i = 0; i < count; i++) {
-                const spark = document.createElement('div');
-                spark.className = 'spark-effect';
-                spark.style.left = Math.random() * 100 + '%';
-                spark.style.top = Math.random() * 100 + '%';
-                spark.style.width = Math.random() * 5 + 4 + 'px';
-                spark.style.height = spark.style.width;
-                spark.style.animationDuration = Math.random() * 8 + 10 + 's';
-                spark.style.animationDelay = Math.random() * 6 + 's';
-                bgLayer.appendChild(spark);
-            }
-        }
-        addSparks(25);
+    <h1 class="title">POPKID-XMD</h1>
+    <p class="subtitle"></p>
+    <div class="tagline">Powered by Popkid Tech</div>
+  </div>
 
-        function showComments() {
-            const savedComments = JSON.parse(localStorage.getItem('userFeedback')) || [];
-            const commentArea = document.getElementById('comment-list');
-            commentArea.innerHTML = '';
-            savedComments.forEach(feedback => {
-                const newFeedback = document.createElement('div');
-                newFeedback.className = 'user-comment-box';
-                newFeedback.innerHTML = `
-                    <div class="comment-author">${feedback.name}</div>
-                    <div class="comment-time">${feedback.time}</div>
-                    <p>${feedback.text}</p>
-                    <button class="remove-comment">Remove</button>
-                `;
-                commentArea.appendChild(newFeedback);
+  <label class="input-label">ENTER PHONE NUMBER</label>
+  <input type="text" id="mobileNumber" class="input-field" placeholder="eg. +254111385747">
 
-                const removeBtn = newFeedback.querySelector('.remove-comment');
-                removeBtn.addEventListener('click', function() {
-                    if (feedback.name === 'Admin') {
-                        commentArea.removeChild(newFeedback);
-                        const updatedFeedback = savedComments.filter(f => f.time !== feedback.time);
-                        localStorage.setItem('userFeedback', JSON.stringify(updatedFeedback));
-                    }
-                });
-            });
-        }
+  <button class="generate-btn" id="submit">GENERATE CODE</button>
 
-        document.querySelector('.post-comment').addEventListener('click', function() {
-            const name = document.querySelector('.user-name').value;
-            const comment = document.querySelector('.user-comment').value;
-            if (name && comment) {
-                const newFeedback = {
-                    name: name,
-                    text: comment,
-                    time: new Date().toLocaleString('en-US', { timeZone: 'Asia/Colombo' })
-                };
-                let feedbackList = JSON.parse(localStorage.getItem('userFeedback')) || [];
-                feedbackList.push(newFeedback);
-                localStorage.setItem('userFeedback', JSON.stringify(feedbackList));
-                showComments();
-                document.querySelector('.user-name').value = '';
-                document.querySelector('.user-comment').value = '';
-            }
-        });
+  <div class="code-display" id="codeDisplay">Code will appear here</div>
 
-        window.onload = showComments;
-    </script>
+  <button class="copy-btn" id="copy">
+    <i class="fas fa-copy"></i> COPY CODE
+  </button>
+</div>
+
+<script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.0/axios.min.js"></script>
+
+<script>
+  particlesJS("particles-js", {
+    particles: {
+      number: { value: 80, density: { enable: true, area: 800 } },
+      color: { value: "#00ff88" },
+      shape: { type: "circle" },
+      opacity: { value: 0.5, random: true },
+      size: { value: 3, random: true },
+      move: { enable: true, speed: 1.5 }
+    },
+    interactivity: {
+      events: {
+        onhover: { enable: true, mode: "repulse" },
+        onclick: { enable: true, mode: "push" }
+      }
+    },
+    retina_detect: true
+  });
+
+  document.getElementById('submit').addEventListener('click', async () => {
+    const codeDisplay = document.getElementById('codeDisplay');
+    const num = document.getElementById('mobileNumber').value.trim();
+    if (!num) {
+      codeDisplay.textContent = 'Enter a valid number';
+      return;
+    }
+
+    try {
+      const res = await axios(`/code?number=${num.replace(/\D/g, '')}`);
+      codeDisplay.textContent = res.data.code || 'Error generating key';
+    } catch {
+      codeDisplay.textContent = 'Failed';
+    }
+  });
+
+  document.getElementById('copy').addEventListener('click', () => {
+    const code = document.getElementById('codeDisplay').textContent.trim();
+    if (!code || code === 'code will appear here') return;
+
+    navigator.clipboard.writeText(code);
+    // alert — silent copy
+  });
+</script>
+
 </body>
 </html>
